@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Johana Ramirez - Estrategia, Experiencia, Resultados</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- 1. Initial Loading Screen -->
+    <div id="loader">
+        <!-- ÚNICO LOGO INICIAL -->
+        <img src="images/logo-johana-small.png" alt="Johana Ramirez Logo" id="loader-logo">
+    </div>
+
+    <!-- Main Wrapper for Scroll Snapping -->
+    <div class="scroll-container">
+
+        <!-- Section 1: Landing / Video -->
+        <section id="home" class="snap-section section-1">
+            <!-- Background Video -->
+            <video autoplay muted loop playsinline id="bg-video">
+                <!-- Asegúrate que la ruta 'videos/background-video.mp4' es correcta -->
+                <source src="videos/background-video.mp4" type="video/mp4">
+                Tu navegador no soporta videos HTML5.
+            </video>
+
+            <!-- Header Elements -->
+            <header class="main-header">
+                <button class="menu-button">Menú</button>
+                <a href="#contact-section" class="contact-link">Contacto</a>
+            </header>
+
+            <!-- Contenedor Centrado Principal -->
+            <div class="centered-content">
+                <!-- El logo (#loader-logo) se moverá aquí con JS -->
+                <!-- LOGO PRINCIPAL (inicialmente oculto) -->
+                <img src="images/logo-johana-small.png" alt="Johana Ramirez Logo" id="main-logo">
+                <!-- Contenedor para los títulos -->
+                <div class="title-container">
+                    <!-- Títulos para el efecto fade -->
+                    <h1 class="main-title">Estrategia</h1>
+                    <h1 class="main-title">Experiencia</h1>
+                    <h1 class="main-title">Resultados</h1>
+                    <h1 class="main-title">Confianza</h1>
+                </div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <nav class="footer-nav">
+                <a href="#home">Inicio</a>
+                <a href="#services">Servicios</a>
+                <a href="#about">Sobre mi</a>
+                <a href="#contact-section">Contacto</a>
+            </nav>
+        </section> <!-- Fin de section#home -->
+
+        <!-- Section 2: Services / About / Contact -->
+        <section id="services" class="snap-section section-2">
+            <!-- Wrapper para el contenido de la sección 2 -->
+            <div class="section-content-wrapper">
+
+                <!-- Horizontal Scrolling Services -->
+                <div class="services-container">
+                    <h2>Nuestros Servicios</h2>
+                    <div class="services-scroll-wrapper">
+                        <div class="services-list">
+                            <!-- Items de servicio (Usa tus imágenes reales) -->
+                             <div class="service-item">
+                                <!-- Asegúrate que la ruta 'images/...' sea correcta -->
+                                <img src="images/placeholder-image-activacion.jpg" alt="Activación">
+                                <p>Activación</p>
+                            </div>
+                            <div class="service-item">
+                                <img src="images/placeholder-image-eventos.jpg" alt="Eventos">
+                                <p>Eventos</p>
+                            </div>
+                            <div class="service-item">
+                                <img src="images/placeholder-image-implementacion.jpg" alt="Implementación">
+                                <p>Implementación</p>
+                            </div>
+                            <div class="service-item">
+                                <img src="images/placeholder-image-merch.jpg" alt="Merchandising">
+                                <p>Merchandising</p>
+                            </div>
+                            <div class="service-item">
+                                <img src="images/placeholder-image-pop.jpg" alt="Material P.O.P">
+                                <p>Material P.O.P</p>
+                            </div>
+                             <div class="service-item">
+                                <img src="images/placeholder-image-ginkanas.jpg" alt="Ginkanas">
+                                <p>Ginkanas</p>
+                            </div>
+                             <div class="service-item">
+                                <img src="images/placeholder-image-experiencia.jpg" alt="Experiencia">
+                                <p>Experiencia</p>
+                            </div>
+                            <!-- Reemplaza los placeholders -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Me Section -->
+                <div id="about" class="about-section">
+                    <h3>Sobre Mi</h3>
+                    <p>Texto descriptivo sobre Johana Ramirez aquí. Mantener el estilo elegante y profesional, con interlineado generoso.</p>
+                    <!-- Añade tu contenido real -->
+                </div>
+
+                <!-- Contact Section -->
+                <div id="contact-section" class="contact-section">
+                     <h3>Contacto</h3>
+                     <p>Información de contacto o un formulario simple aquí.</p>
+                     <!-- Añade tu contenido real/formulario -->
+                </div>
+
+            </div> <!-- Fin de .section-content-wrapper -->
+        </section> <!-- Fin de section#services -->
+
+    </div> <!-- Fin de .scroll-container -->
+
+    <!-- Script al final del body para mejor rendimiento -->
+    <script src="script.js"></script>
+</body>
+</html>
