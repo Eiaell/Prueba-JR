@@ -129,7 +129,7 @@ window.addEventListener('load', () => {
                 setTimeout(() => {
                     console.log("Scroll likely complete. Setting footer state for S2.");
 
-                    // Decidir qué hacer con el footer en Sección 2:
+                    // Decidir qué hacer con el footer aquí:
                     // Opción A: Ocultarlo permanentemente en S2
                     footerNav.classList.add('hidden-in-s2');
                     footerNav.classList.remove('is-hidden'); // Quitar clase temporal
@@ -222,4 +222,94 @@ window.addEventListener('load', () => {
         console.log("Horizontal scroll container found. Basic scroll enabled via CSS.");
     }
 
+    // --- Animación de estrellas y estrellas fugaces en sección 2 ---
+    (function(){
+        const section2 = document.getElementById('services');
+        const starBg = document.getElementById('star-bg');
+        if (!section2 || !starBg) return;
+
+        function randomBetween(a, b) {
+            return Math.random() * (b - a) + a;
+        }
+
+        function createStarSVG(size) {
+            // SVG estrella de 5 puntas con brillo y resplandor
+            return `<svg viewBox="0 0 64 64" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+                <polygon class="star-shape" points="32,6 39.5,25.5 60,25.5 43,39 50,58 32,46 14,58 21,39 4,25.5 24.5,25.5"/>
+                <circle class="star-glow" cx="32" cy="32" r="16"/>
+            </svg>`;
+        }
+
+        function createShootingStarSVG(width = 180, height = 18, tailLen = 140) {
+            // SVG con cola difusa y cabeza brillante, cola con gradiente
+            return `<svg viewBox='0 0 ${width} ${height}' width='${width}' height='${height}' xmlns='http://www.w3.org/2000/svg'>
+                <defs>
+                    <linearGradient id='tail-gradient' x1='0' y1='0' x2='1' y2='0'>
+                        <stop offset='0%' stop-color='#fff' stop-opacity='0.85'/>
+                        <stop offset='60%' stop-color='#fff' stop-opacity='0.35'/>
+                        <stop offset='100%' stop-color='#fff' stop-opacity='0'/>
+                    </linearGradient>
+                </defs>
+                <ellipse class='head' cx='${tailLen+18}' cy='${height/2}' rx='10' ry='6'/>
+                <rect class='tail-main' x='0' y='${height/2-4}' width='${tailLen}' height='8' rx='4'/>
+                <rect class='tail-fade' x='${tailLen-20}' y='${height/2-3}' width='20' height='6' rx='3'/>
+            </svg>`;
+        }
+
+        function spawnStar() {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = randomBetween(44, 78);
+            star.style.width = star.style.height = size + 'px';
+            star.style.left = randomBetween(0, 92) + '%';
+            star.style.top = randomBetween(2, 90) + '%';
+            star.innerHTML = createStarSVG(size);
+            starBg.appendChild(star);
+            setTimeout(() => star.remove(), 2200);
+        }
+
+        function spawnShootingStar(starBg) {
+            // Dirección aleatoria: true=izq->der, false=der->izq
+            const leftToRight = Math.random() > 0.5;
+            const startY = Math.random() * 55 + 10; // entre 10% y 65%
+            const startX = leftToRight ? -20 : 100;
+            const endX = leftToRight ? 100 : -20;
+            const angle = (Math.random() * 10 - 23) * (leftToRight ? 1 : -1); // -18 a -28 grados, invertido si es derecha a izquierda
+            const width = 180, height = 18, tailLen = 140;
+
+            const shooting = document.createElement('div');
+            shooting.className = 'shooting-star';
+            shooting.innerHTML = createShootingStarSVG(width, height, tailLen);
+            shooting.style.top = `${startY}%`;
+            shooting.style.left = `${startX}%`;
+            shooting.style.transform = `rotate(${angle}deg)`;
+            shooting.style.opacity = 1;
+            shooting.style.transition = 'none';
+
+            starBg.appendChild(shooting);
+            // Forzar reflow para que la animación se aplique correctamente
+            void shooting.offsetWidth;
+
+            // Movimiento diagonal largo, fade out al final
+            shooting.style.transition = 'transform 1.7s cubic-bezier(0.35,0.7,0.5,1), opacity 0.8s';
+            shooting.style.transform = `translateX(${endX-startX}vw) translateY(22vh) rotate(${angle}deg)`;
+
+            setTimeout(() => { shooting.style.opacity = 0; }, 1400);
+            setTimeout(() => shooting.remove(), 2000);
+        }
+
+        // Aparición periódica de estrellas grandes
+        setInterval(() => {
+            if (section2.offsetParent !== null) { // Solo si visible
+                spawnStar();
+            }
+        }, 900 + Math.random()*1200);
+
+        // Integración automática: genera fugaces cada cierto tiempo
+        setInterval(() => {
+            if (starBg && starBg.offsetParent !== null) {
+                spawnShootingStar(starBg);
+            }
+        }, 3500 + Math.random() * 2500);
+    })();
 });
