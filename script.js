@@ -67,13 +67,31 @@ window.addEventListener('load', () => {
         }
     }
 
-    // --- Smooth Scrolling for Anchor Links --- //
+    // --- Smooth Scrolling ENHANCED for Anchor Links --- //
+    // Selecciona TODOS los enlaces internos (header, footer nav, etc.)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
+            // 1. Prevenir el comportamiento de salto instantáneo por defecto
+            e.preventDefault();
+
+            // 2. Obtener el ID del objetivo desde el href
             const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement && targetId.length > 1) {
-               // Default behavior is usually sufficient with scroll-snap
+
+            // 3. Asegurarse de que no es solo un "#" vacío
+            if (targetId && targetId.length > 1) {
+                // 4. Encontrar el elemento objetivo en el DOM
+                const targetElement = document.querySelector(targetId);
+
+                // 5. Si el elemento existe, hacer scroll suave hacia él
+                if (targetElement) {
+                    console.log(`Scrolling smoothly to: ${targetId}`); // Log para depuración
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth', // La clave para el scroll suave
+                        block: 'start' // Alinea la parte superior del elemento con la parte superior del viewport
+                    });
+                } else {
+                    console.warn(`Target element not found for selector: ${targetId}`); // Advertencia si el ID no existe
+                }
             }
         });
     });

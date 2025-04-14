@@ -37,6 +37,7 @@ body {
   height: 100vh; /* Full viewport height */
   overflow-y: scroll; /* Enable vertical scroll WITHIN this container */
   scroll-snap-type: y mandatory; /* Enable mandatory vertical snapping */
+  scroll-behavior: smooth; /* ¡IMPORTANTE AÑADIR/VERIFICAR ESTO! */
 }
 
 .snap-section {
