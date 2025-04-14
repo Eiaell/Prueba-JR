@@ -69,6 +69,26 @@ body {
     padding-bottom: 60px;
 }
 
+/* Section 1: Home */
+#home {
+    background-color: var(--background-dark);
+    color: var(--text-color-light);
+    z-index: 3; /* Above section 2 */
+    /* Add opacity transition */
+    transition: opacity 0.5s ease-out;
+}
+
+/* Section 2: Services */
+#services {
+    background-color: var(--section2-bg);
+    color: var(--text-color-dark);
+    justify-content: flex-start;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    z-index: 2; /* Below section 1 initially */
+    /* Inherits position: relative from .snap-section */
+}
+
 /* --- Main Page Structure (Section 1) --- */
 
 /* Background Video */
@@ -248,6 +268,8 @@ body {
     -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
     scrollbar-width: none; /* Ocultar scrollbar en Firefox */
     -ms-overflow-style: none; /* Ocultar scrollbar en IE/Edge */
+    /* Add opacity transition */
+    transition: opacity 0.4s ease-out;
 }
 /* Ocultar scrollbar en WebKit (Chrome, Safari) */
 .footer-nav::-webkit-scrollbar {
@@ -289,6 +311,11 @@ body {
     /* Si usas Dancing Script, el peso puede no cambiar mucho, el color y tamaño son clave */
 }
 
+/* Clase específica para ocultar el footer (si se desea en S2) */
+.footer-nav.hidden-in-s2 {
+     opacity: 0 !important;
+     pointer-events: none;
+}
 
 /* --- Ajustes Responsivos para Footer Navigation --- */
 @media (max-width: 900px) {
@@ -472,4 +499,12 @@ body {
         font-size: 0.8rem;
     }
     /* Otros ajustes para móviles muy pequeños */
+}
+
+/* --- Helper Classes for Simple Transition --- */
+
+/* Clase para ocultar elementos suavemente */
+.is-hidden {
+    opacity: 0 !important; /* Usar !important con cuidado, solo si es necesario */
+    pointer-events: none; /* Evitar interacciones cuando está oculto */
 }
