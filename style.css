@@ -228,28 +228,98 @@ body {
     /* transform: scale(1.05); */ /* REVERTED - Removed scale */
 }
 
+/* --- Footer Navigation (Section 1) - REVISED FEMININE STYLE --- */
 .footer-nav {
-    position: absolute; /* Position relative to section */
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(245, 245, 245, 0.1); /* Slightly transparent background */
-    padding: 15px 0;
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;        /* Ancho se ajusta al contenido */
+    max-width: 95%;     /* Límite un poco más generoso */
+    background-color: rgba(248, 248, 248, 0.92); /* Fondo blanco roto, limpio */
+    padding: 10px 30px; /* Ajustar padding si es necesario */
+    border-radius: 50px; /* Forma de píldora */
     text-align: center;
-    z-index: 10; /* Above video */
+    z-index: 10;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    white-space: nowrap; /* CLAVE: Evita que los elementos se vayan abajo */
+    overflow-x: auto;   /* Añade scroll horizontal SOLO si no cabe en pantallas MUY pequeñas */
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+    scrollbar-width: none; /* Ocultar scrollbar en Firefox */
+    -ms-overflow-style: none; /* Ocultar scrollbar en IE/Edge */
 }
+/* Ocultar scrollbar en WebKit (Chrome, Safari) */
+.footer-nav::-webkit-scrollbar {
+    display: none;
+}
+
 
 .footer-nav a {
-    font-family: var(--elegant-serif);
-    color: var(--text-color-dark);
+    /* --- FUENTE FEMENINA ELEGANTE (Elegir UNA y asegurarse de importarla) --- */
+    /* Opción 1: Poppins (Moderna, limpia, legible) */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300; /* Peso ligero */
+    /* Opción 2: Dancing Script (Cursiva, muy femenina, MENOS legible para NAV) */
+    /* font-family: 'Dancing Script', cursive; */
+    /* font-weight: 400; */ /* Peso regular para scripts */
+    /* Opción 3: Mantener Raleway si se prefiere */
+    /* font-family: 'Raleway', 'Lato', sans-serif; */
+    /* font-weight: 400; */
+
+    font-size: 1rem; /* Tamaño base, ajustar si es necesario */
+    color: #404040; /* Gris oscuro para buena legibilidad sobre fondo claro */
     text-decoration: none;
-    margin: 0 20px;
-    font-size: 1rem;
-    transition: opacity 0.3s ease;
+    margin: 0 18px;         /* Espacio horizontal (reducido ligeramente) */
+    padding: 8px 5px;         /* Padding vertical para área de hover */
+    letter-spacing: 0.7px;    /* Espaciado entre letras */
+    position: relative;
+    display: inline-block;
+    /* Transición para el NUEVO efecto hover */
+    transition: transform 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
 }
 
+/* --- NUEVO Efecto Hover: Grande, Rosado, Negrita --- */
 .footer-nav a:hover {
-    opacity: 0.7;
+    transform: scale(1.15);      /* Hacerlo un 15% más grande */
+    color: #D87093;             /* Color Rosado (PaleVioletRed - elegante) */
+    /* Alternativa Rosa más vibrante: #FF69B4 (HotPink) */
+    /* Alternativa Rosa suave: #FFB6C1 (LightPink) */
+    font-weight: 600;             /* Poner en Semi-Negrita (Poppins necesita 600 importado) */
+    /* Si usas Dancing Script, el peso puede no cambiar mucho, el color y tamaño son clave */
+}
+
+
+/* --- Ajustes Responsivos para Footer Navigation --- */
+@media (max-width: 900px) {
+    .footer-nav a {
+        margin: 0 12px; /* Reducir margen horizontal */
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-nav {
+        padding: 8px 15px; /* Reducir padding general */
+        bottom: 20px;
+        max-width: 95%; /* Asegurar que no toque bordes */
+    }
+    .footer-nav a {
+        margin: 0 8px;     /* Reducir más el margen */
+        font-size: 0.9rem;  /* Reducir tamaño de fuente */
+        letter-spacing: 0.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-nav {
+        padding: 7px 10px;
+         /* Permitir scroll horizontal si es necesario en pantallas muy pequeñas */
+    }
+     .footer-nav a {
+        margin: 0 6px;      /* Mínimo margen viable */
+        font-size: 0.85rem; /* Fuente más pequeña */
+        letter-spacing: 0.4px;
+    }
 }
 
 /* --- Section 2: Services / About / Contact --- */
@@ -374,21 +444,31 @@ body {
     }
 }
 
-@media (max-width: 480px) {
-    h1 { font-size: 2rem; letter-spacing: 1px; }
-    #loader-logo { max-width: 100px; } /* Ajusta loader logo inicial */
-    #main-logo { 
-        max-width: 125px; 
-        /* margin: -150px auto 40px auto; */ /* REMOVED */
+@media (max-width: 768px) {
+    .footer-nav {
+        width: 95%; /* Más ancho en pantallas pequeñas */
+        bottom: 10px;
+        padding: 8px 10px;
+    }
+
+    .footer-nav a {
+        margin: 0 8px; /* Menos espacio entre enlaces */
+        font-size: 0.9rem; /* Texto ligeramente más pequeño */
+    }
+
+    .main-title {
+        font-size: 4rem; /* Ajustar títulos principales si es necesario */
     }
 
     .centered-content {
-        width: 95%; /* More width on mobile */
-        padding-top: 200px; /* Adjust proportionally (300 * 2/3) */
-        padding-bottom: 60px; /* Adjust */
+        padding-top: 200px; /* Ajustar padding si es necesario */
     }
-    .main-title { font-size: 3.5rem; /* Adjust proportionally (7 * 3/6) */ line-height: 1.4; letter-spacing: 2px;} /* Adjust */
-    .title-container {
-        min-height: 120px; /* Adjust height for font size */
+}
+
+@media (max-width: 480px) {
+     .footer-nav a {
+        margin: 0 5px; /* Aún menos espacio */
+        font-size: 0.8rem;
     }
+    /* Otros ajustes para móviles muy pequeños */
 }
