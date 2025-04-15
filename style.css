@@ -6,6 +6,12 @@
     --background-dark: #000000;
     --background-light-solid: rgba(245, 245, 245, 0.9); /* Footer nav background */
     --section2-bg: #ffffff; /* Background for Section 2 */
+    /* Feminine Pastel Palette */
+    --pastel-pink: #f8e1ec;
+    --pastel-lavender: #e5e6fa;
+    --pastel-gold: #fdf6e3;
+    --pastel-aqua: #e0f7fa;
+    --pastel-accent: #d1a3c9;
 }
 
 * {
@@ -227,6 +233,8 @@ body {
     /* --- Estilos para animación fade --- */
     opacity: 0; /* Oculto por defecto */
     transition: opacity 0.8s ease-in-out; /* Transición suave de opacidad */
+    color: var(--pastel-accent);
+    text-shadow: 0 2px 8px var(--pastel-lavender);
 }
 
 /* Clase para hacer visible el título actual */
@@ -238,18 +246,22 @@ body {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 400;
     font-size: 1rem; /* REVERTED - Original size */
-    color: var(--text-color-light);
-    background-color: transparent;
-    border: 1px solid var(--text-color-light);
-    padding: 8px 16px; /* Adjusted padding */
+    color: var(--text-color-dark);
+    background-color: var(--pastel-pink);
+    border: 2px solid var(--pastel-accent);
+    border-radius: 24px;
+    padding: 10px 22px;
     text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 8px 0 rgba(221, 160, 221, 0.10);
+    transition: background-color 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s;
 }
 
 .menu-button:hover, .contact-link:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Ligero fondo blanco al pasar */
-    /* transform: scale(1.05); */ /* REVERTED - Removed scale */
+    background-color: var(--pastel-lavender);
+    color: var(--pastel-accent);
+    border-color: var(--pastel-accent);
+    box-shadow: 0 4px 16px 0 rgba(209, 163, 201, 0.15);
 }
 
 /* --- Footer Navigation (Section 1) - REVISED FEMININE STYLE --- */
@@ -260,12 +272,12 @@ body {
     transform: translateX(-50%);
     width: auto;        /* Ancho se ajusta al contenido */
     max-width: 95%;     /* Límite un poco más generoso */
-    background-color: rgba(248, 248, 248, 0.92); /* Fondo blanco roto, limpio */
+    background: var(--pastel-gold);
+    border-radius: 36px;
+    box-shadow: 0 -2px 10px 0 rgba(221, 160, 221, 0.10);
     padding: 10px 30px; /* Ajustar padding si es necesario */
-    border-radius: 50px; /* Forma de píldora */
     text-align: center;
     z-index: 10;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
     white-space: nowrap; /* CLAVE: Evita que los elementos se vayan abajo */
     overflow-x: auto;   /* Añade scroll horizontal SOLO si no cabe en pantallas MUY pequeñas */
     -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
@@ -284,7 +296,7 @@ body {
     /* --- FUENTE FEMENINA ELEGANTE (Elegir UNA y asegurarse de importarla) --- */
     /* Opción 1: Poppins (Moderna, limpia, legible) */
     font-family: 'Poppins', sans-serif;
-    font-weight: 300; /* Peso ligero */
+    font-weight: 400;
     /* Opción 2: Dancing Script (Cursiva, muy femenina, MENOS legible para NAV) */
     /* font-family: 'Dancing Script', cursive; */
     /* font-weight: 400; */ /* Peso regular para scripts */
@@ -293,25 +305,21 @@ body {
     /* font-weight: 400; */
 
     font-size: 1rem; /* Tamaño base, ajustar si es necesario */
-    color: #404040; /* Gris oscuro para buena legibilidad sobre fondo claro */
+    color: var(--pastel-accent);
+    background: transparent;
+    border: none;
+    border-radius: 16px;
+    padding: 8px 18px;
     text-decoration: none;
-    margin: 0 18px;         /* Espacio horizontal (reducido ligeramente) */
-    padding: 8px 5px;         /* Padding vertical para área de hover */
-    letter-spacing: 0.7px;    /* Espaciado entre letras */
-    position: relative;
+    transition: transform 0.18s cubic-bezier(.36,1.5,.64,1);
     display: inline-block;
-    /* Transición para el NUEVO efecto hover */
-    transition: transform 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
 }
 
-/* --- NUEVO Efecto Hover: Grande, Rosado, Negrita --- */
 .footer-nav a:hover {
-    transform: scale(1.15);      /* Hacerlo un 15% más grande */
-    color: #D87093;             /* Color Rosado (PaleVioletRed - elegante) */
-    /* Alternativa Rosa más vibrante: #FF69B4 (HotPink) */
-    /* Alternativa Rosa suave: #FFB6C1 (LightPink) */
-    font-weight: 600;             /* Poner en Semi-Negrita (Poppins necesita 600 importado) */
-    /* Si usas Dancing Script, el peso puede no cambiar mucho, el color y tamaño son clave */
+    background: transparent;
+    color: var(--pastel-accent);
+    transform: scale(1.15);
+    box-shadow: 0 4px 16px 0 rgba(209, 163, 201, 0.12);
 }
 
 /* Clase específica para ocultar el footer (si se desea en S2) */
