@@ -178,14 +178,14 @@ body {
     z-index: 10; /* Ensure logo is above other elements */
     /* --- Absolute Positioning --- */
     position: absolute; /* POSITION ABSOLUTE */
-    top: 0px; /* MOVED to very top */
+    top: -96px; /* Move logo up by about 1 inch */
     left: 50%;
     transform: translateX(-50%); /* Center horizontally */
 }
 
 /* Clase para hacer visible el logo principal */
 #main-logo.visible {
-    opacity: 1;
+    opacity: 0.25;
 } /* RESTORED */
 
 /* Contenedor de Logo (final) + Títulos */
