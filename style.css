@@ -305,7 +305,7 @@ body {
     /* font-weight: 400; */
 
     font-size: 1rem; /* Tamaño base, ajustar si es necesario */
-    color: var(--pastel-accent);
+    color: var(--text-color-dark);
     background: transparent;
     border: none;
     border-radius: 16px;
@@ -317,7 +317,7 @@ body {
 
 .footer-nav a:hover {
     background: transparent;
-    color: var(--pastel-accent);
+    color: var(--text-color-dark);
     transform: scale(1.15);
     box-shadow: 0 4px 16px 0 rgba(209, 163, 201, 0.12);
 }
@@ -370,12 +370,28 @@ body {
 }
 
 .services-container h2,
-.about-section h3,
-.contact-section h3 {
+.about-section, .contact-section {
     font-size: 2.5rem;
     font-weight: 400;
     margin-bottom: 30px;
     color: var(--text-color-dark);
+}
+
+.about-section h3, .contact-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #D18CB0;
+    margin-bottom: 0.5em;
+    text-transform: none;
+}
+
+.about-section p, .contact-section p {
+    font-size: 1.1rem;
+    line-height: 1.8; /* Generous line spacing */
+    text-align: center;
+    color: #555; /* Slightly muted text */
 }
 
 /* Horizontal Scrolling Services */
@@ -446,11 +462,29 @@ body {
 
 /* About and Contact Sections */
 .about-section, .contact-section {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.7;
+    color: #3A2C2A;
+    text-shadow: 0 1px 0 #fff4, 0 2px 8px #f7eaea22;
     margin-top: 50px; /* Space above these sections */
     padding: 0 20px;
     max-width: 800px; /* Limit text width for readability */
     margin-left: auto;
     margin-right: auto;
+}
+
+.about-section h3, .contact-section h3 {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 2.5rem;
+    letter-spacing: 0.02em;
+    color: #181818;
+    margin-bottom: 30px;
+    text-transform: none;
+    line-height: 1.1;
 }
 
 .about-section p, .contact-section p {
