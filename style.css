@@ -705,6 +705,28 @@ body {
 
 /* --- Helper Classes for Simple Transition --- */
 
+/* Animación GEL (Squash) solo para los botones del header */
+.menu-button.squash-gel, .contact-link.squash-gel, .footer-nav a.squash-gel {
+  animation: squash-gel-btn 0.38s cubic-bezier(.36,1.5,.64,1);
+}
+@keyframes squash-gel-btn {
+  0% {
+    transform: scale(1,1) translateY(0);
+  }
+  25% {
+    transform: scale(1.22,0.78) translateY(-2px); /* Squash horizontal */
+  }
+  55% {
+    transform: scale(0.88,1.13) translateY(-7px); /* Stretch vertical */
+  }
+  80% {
+    transform: scale(1.08,0.95) translateY(-2px); /* Rebound */
+  }
+  100% {
+    transform: scale(1,1) translateY(0);
+  }
+}
+
 /* Clase para ocultar elementos suavemente */
 .is-hidden {
     opacity: 0 !important; /* Usar !important con cuidado, solo si es necesario */

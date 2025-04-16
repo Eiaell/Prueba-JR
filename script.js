@@ -68,6 +68,17 @@ window.addEventListener('load', () => {
         }
     }
 
+    // --- Animación GEL (Squash) para header y footer nav --- //
+    const gelButtons = document.querySelectorAll('.main-header .menu-button, .main-header .contact-link, .footer-nav a');
+    gelButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.classList.add('squash-gel');
+            setTimeout(() => {
+                this.classList.remove('squash-gel');
+            }, 380);
+        });
+    });
+
     // --- Smooth Scrolling ENHANCED for Anchor Links --- //
     // Selecciona TODOS los enlaces internos (header, footer nav, etc.)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
