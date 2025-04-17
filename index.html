@@ -127,7 +127,35 @@
 
     </div> <!-- Fin de .scroll-container -->
 
-    <!-- Script al final del body para mejor rendimiento -->
-    <script src="script.js"></script>
+    <!-- Chatbot Component -->
+    <div id="chatbot-container" class="chatbot-closed">
+        <div class="chatbot-button">
+            <img src="images/logo2.png" alt="Asistente de Johana" class="chat-button-img">
+        </div>
+        <div class="chatbot-box">
+            <div class="chatbot-header">
+                <div class="chatbot-title">Asistente de Johana Rodriguez</div>
+                <div class="chatbot-close">×</div>
+            </div>
+            <div class="chatbot-messages">
+                <div class="message bot-message">
+                    <div class="message-content">Hola, soy el asistente virtual de Johana Rodriguez. ¿En qué puedo ayudarte?</div>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="user-input" placeholder="Escribe tu mensaje aquí...">
+                <button id="send-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Generative AI library -->
+    <script src="https://cdn.jsdelivr.net/npm/@google/generative-ai@latest/dist/generative-ai.min.js"></script>
+    
+    <!-- Scripts al final del body para mejor rendimiento -->
+    <script src="main.js"></script>
+    <script src="chatbot.js"></script>
 </body>
 </html>

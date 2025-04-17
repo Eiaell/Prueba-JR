@@ -1,6 +1,5 @@
-// Script principal para el sitio web de Johana Rodriguez
 window.addEventListener('load', () => {
-    // --- Referencias a elementos DOM ---
+    // --- Element References ---
     const loader = document.getElementById('loader');
     const loaderLogo = document.getElementById('loader-logo');
     const mainLogo = document.getElementById('main-logo'); 
@@ -9,44 +8,44 @@ window.addEventListener('load', () => {
     const mainTitles = centeredContent ? centeredContent.querySelectorAll('h1.main-title') : [];
     const scrollContainer = document.querySelector('.scroll-container'); 
 
-    // --- Variables para el efecto de títulos ---
+    // --- Title Fade Effect Variables ---
     let currentTitleIndex = 0;
     let titleInterval;
     const titleDisplayTime = 2000; 
 
-    // --- Comprobaciones iniciales ---
+    // --- Initial Checks ---
     if (!loader || !loaderLogo || !mainLogo || !body || !centeredContent || mainTitles.length === 0) {
-        console.error("Error: Elementos esenciales no encontrados al cargar!");
+        console.error("Error: Essential elements missing on load!");
         if(loader) loader.style.display = 'none';
         if(body) body.classList.add('loaded');
         return;
     }
 
-    // --- Visualización del loader y transición ---
+    // --- Loader Display & Transition --- //
     const loaderDuration = 2500; 
 
     setTimeout(() => {
-        // 1. Ocultar fondo del loader y logo
+        // 1. Fade out loader background and loader logo
         loader.classList.add('hidden');
         loaderLogo.classList.add('hidden');
 
-        // 2. Mostrar contenido principal
+        // 2. Fade in main content (body)
         body.classList.add('loaded');
 
-        // 3. Mostrar logo principal
+        // 3. Fade in main logo
         mainLogo.classList.add('visible');
 
-        // 4. Iniciar ciclo de títulos DESPUÉS de que el contenido esté visible
+        // 4. Start Title Cycling AFTER the main content is visible
         startTitleCycling();
 
-        // 5. Eliminar el loader del DOM después de la transición
+        // 5. Optionally remove the loader from DOM after transition
         loader.addEventListener('transitionend', () => {
             loader.remove();
         }, { once: true });
 
     }, loaderDuration);
 
-    // --- Función para ciclar títulos ---
+    // --- Title Cycling Function --- //
     function cycleTitles() {
         if (mainTitles.length === 0) {
             clearInterval(titleInterval);
@@ -58,18 +57,18 @@ window.addEventListener('load', () => {
         mainTitles[currentTitleIndex].classList.add('visible');
     }
 
-    // --- Función para iniciar ciclo de títulos ---
+    // --- Function to Start Title Cycling --- //
     function startTitleCycling() {
-        if (mainTitles.length > 0) {
+         if (mainTitles.length > 0) {
             clearInterval(titleInterval); 
             mainTitles[0].classList.add('visible'); 
             titleInterval = setInterval(cycleTitles, titleDisplayTime);
         } else {
-            console.warn("No se encontraron títulos para ciclar.");
+            console.warn("No main titles found to start cycling.");
         }
     }
 
-    // --- Animación GEL (Squash) para botones ---
+    // --- Animación GEL (Squash) para header y footer nav --- //
     const gelButtons = document.querySelectorAll('.main-header .menu-button, .main-header .contact-link, .footer-nav a');
     gelButtons.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -80,29 +79,36 @@ window.addEventListener('load', () => {
         });
     });
 
-    // --- Scroll suave para enlaces de anclaje ---
+    // --- Smooth Scrolling ENHANCED for Anchor Links --- //
+    // Selecciona TODOS los enlaces internos (header, footer nav, etc.)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
+            // 1. Prevenir el comportamiento de salto instantáneo por defecto
             e.preventDefault();
+
+            // 2. Obtener el ID del objetivo desde el href
             const targetId = this.getAttribute('href');
-            
+
+            // 3. Asegurarse de que no es solo un "#" vacío
             if (targetId && targetId.length > 1) {
+                // 4. Encontrar el elemento objetivo en el DOM
                 const targetElement = document.querySelector(targetId);
-                
+
+                // 5. Si el elemento existe, hacer scroll suave hacia él
                 if (targetElement) {
-                    console.log(`Desplazando suavemente a: ${targetId}`);
+                    console.log(`Scrolling smoothly to: ${targetId}`); // Log para depuración
                     targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                        behavior: 'smooth', // La clave para el scroll suave
+                        block: 'start' // Alinea la parte superior del elemento con la parte superior del viewport
                     });
                 } else {
-                    console.warn(`Elemento objetivo no encontrado para el selector: ${targetId}`);
+                    console.warn(`Target element not found for selector: ${targetId}`); // Advertencia si el ID no existe
                 }
             }
         });
     });
 
-    // --- Transición del botón HOME ---
+    // --- HOME Button Transition (Simple Fade & Scroll) --- //
     const homeButton = document.querySelector('.menu-button');
     const section1 = document.getElementById('home');
     const section2 = document.getElementById('services');
@@ -110,85 +116,136 @@ window.addEventListener('load', () => {
 
     if (homeButton && section1 && section2 && footerNav && scrollContainer) {
         homeButton.addEventListener('click', (e) => {
-            e.preventDefault();
+            e.preventDefault(); // Prevenir comportamiento por defecto
 
-            console.log("HOME cliqueado, iniciando transición...");
+            console.log("HOME clicked, starting simple fade & scroll transition...");
 
+            // 1. Iniciar desvanecimiento de Sección 1 y Footer Nav
             section1.classList.add('is-hidden');
-            footerNav.classList.add('is-hidden');
+            footerNav.classList.add('is-hidden'); // Ocultar footer temporalmente
 
+            // 2. Esperar un breve momento para que el desvanecimiento comience
+            //    antes de iniciar el scroll.
             setTimeout(() => {
-                console.log("Desplazando suavemente a Sección 2...");
+                console.log("Scrolling smoothly to Section 2...");
 
+                // 3. Scroll suave a Sección 2
                 section2.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
                 });
 
+                // 4. Gestionar estado del footer DESPUÉS del scroll (ESTIMADO)
+                //    El observer se encargará de S1 y del footer al cambiar de sección
                 setTimeout(() => {
-                    console.log("Desplazamiento probablemente completado. Configurando estado del footer para S2.");
-                    footerNav.classList.add('hidden-in-s2');
-                    footerNav.classList.remove('is-hidden');
-                }, 700);
+                    console.log("Scroll likely complete. Setting footer state for S2.");
 
-            }, 100);
+                    // Decidir qué hacer con el footer aquí:
+                    // Opción A: Ocultarlo permanentemente en S2
+                    footerNav.classList.add('hidden-in-s2');
+                    footerNav.classList.remove('is-hidden'); // Quitar clase temporal
+
+                    // Opción B: Mostrarlo en S2 (quitar línea anterior y esta)
+                    // footerNav.classList.remove('is-hidden');
+
+                    // YA NO quitamos 'is-hidden' de section1 aquí. El observer lo hará.
+
+                }, 700); // Ajustar tiempo estimado
+
+            }, 100); // Pequeño retraso antes de scrollear (100ms)
+
         });
     } else {
-        console.error("Error: No se encontraron todos los elementos necesarios para la transición HOME.");
+        console.error("Error: No se encontraron todos los elementos necesarios para la transición HOME (simple + observer). Check .scroll-container, .menu-button, #home, #services, .footer-nav");
     }
 
     // --- Intersection Observer para gestionar visibilidad de secciones ---
     if (scrollContainer && section1 && section2 && footerNav) { 
+        // Opciones para el observer: Detectar cuando al menos el 50% de la sección es visible
         const observerOptions = {
-            root: scrollContainer,
+            root: scrollContainer, // Observar dentro del contenedor de scroll
             rootMargin: '0px',
-            threshold: 0.5
+            threshold: 0.5 // Se activa cuando el 50% está visible/invisible
         };
 
+        // Callback que se ejecuta cuando cambia la intersección
         const intersectionCallback = (entries) => {
             entries.forEach(entry => {
+                // entry.target es el elemento observado (section1 o section2)
+                // entry.isIntersecting indica si cumple el threshold (50% visible)
+
                 if (entry.target.id === 'home') {
                     if (entry.isIntersecting) {
-                        console.log("Sección 1 es visible nuevamente.");
+                        // --- Sección 1 ES VISIBLE ---
+                        console.log("Section 1 is visible again.");
+                        // Quitar la clase 'is-hidden' para que sea visible
                         entry.target.classList.remove('is-hidden');
+                        // Mostrar el footer nav asociado a Sección 1
                         footerNav.classList.remove('is-hidden');
-                        footerNav.classList.remove('hidden-in-s2');
+                        footerNav.classList.remove('hidden-in-s2'); // Quitar clase de ocultar en S2
+                    } else {
+                        // --- Sección 1 NO ES VISIBLE ---
+                        // No hacemos nada aquí directamente, el click en HOME la oculta
+                        // console.log("Section 1 is NOT visible.");
                     }
                 } else if (entry.target.id === 'services') {
                     if (entry.isIntersecting) {
-                        console.log("Sección 2 es visible.");
+                        // --- Sección 2 ES VISIBLE ---
+                        console.log("Section 2 is visible.");
+                        // Asegurarse que S1 esté oculta si venimos del click en HOME
+                        // (La lógica del click ya la oculta, pero esto es una doble verificación)
+                        // if (!section1.classList.contains('is-hidden')) {
+                        //     // Esto podría ocultarla también con scroll manual, quizás no deseado
+                        // }
+
+                        // Decidir qué hacer con el footer aquí:
+                        // Si se ocultó al llegar a S2, mantenerlo oculto
                         if (footerNav.classList.contains('hidden-in-s2')) {
                             // Ya está oculto, no hacer nada
                         } else {
+                            // Si no se ocultó, asegurarse de que no tenga la clase is-hidden temporal
                             footerNav.classList.remove('is-hidden');
                         }
+
+                    } else {
+                        // --- Sección 2 NO ES VISIBLE ---
+                        // console.log("Section 2 is NOT visible.");
                     }
                 }
             });
         };
 
+        // Crear el observer
         const observer = new IntersectionObserver(intersectionCallback, observerOptions);
+
+        // Empezar a observar las secciones
         observer.observe(section1);
         observer.observe(section2);
-    } else {
-        console.error("Error: No se pudieron inicializar el Intersection Observer.");
-    }
 
-    // --- Scroll horizontal ---
+    } else {
+         console.error("Error: No se pudieron inicializar el Intersection Observer. Faltan elementos clave (scrollContainer, section1, section2, footerNav).");
+    }
+    // --- Fin de Intersection Observer ---
+
+    // --- Placeholder for Horizontal Scroll --- //
     const scrollWrapper = document.querySelector('.services-scroll-wrapper');
     if (scrollWrapper) {
-        console.log("Contenedor de scroll horizontal encontrado. Scroll básico habilitado a través de CSS.");
+        console.log("Horizontal scroll container found. Basic scroll enabled via CSS.");
     }
 
-    // --- Animación de estrellas ---
-    const starBg = document.getElementById('star-bg');
-    if (starBg && section2) {
+    // --- Animación de estrellas y estrellas fugaces en sección 2 ---
+    (function(){
+        const section2 = document.getElementById('services');
+        const starBg = document.getElementById('star-bg');
+        if (!section2 || !starBg) return;
+        
         // Funciones para generar estrellas
         function randomBetween(a, b) {
             return Math.random() * (b - a) + a;
         }
 
         function createStarSVG(size) {
+            // SVG estrella de 5 puntas con brillo y resplandor
             return `<svg viewBox="0 0 64 64" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
                 <polygon class="star-shape" points="32,6 39.5,25.5 60,25.5 43,39 50,58 32,46 14,58 21,39 4,25.5 24.5,25.5"/>
                 <circle class="star-glow" cx="32" cy="32" r="16"/>
@@ -196,6 +253,7 @@ window.addEventListener('load', () => {
         }
 
         function createShootingStarSVG(width = 180, height = 18, tailLen = 140) {
+            // SVG con cola difusa y cabeza brillante, cola con gradiente
             return `<svg viewBox='0 0 ${width} ${height}' width='${width}' height='${height}' xmlns='http://www.w3.org/2000/svg'>
                 <defs>
                     <linearGradient id='tail-gradient' x1='0' y1='0' x2='1' y2='0'>
@@ -222,12 +280,13 @@ window.addEventListener('load', () => {
             setTimeout(() => star.remove(), 2200);
         }
 
-        function spawnShootingStar() {
+        function spawnShootingStar(starBg) {
+            // Dirección aleatoria: true=izq->der, false=der->izq
             const leftToRight = Math.random() > 0.5;
-            const startY = Math.random() * 55 + 10;
+            const startY = Math.random() * 55 + 10; // entre 10% y 65%
             const startX = leftToRight ? -20 : 100;
             const endX = leftToRight ? 100 : -20;
-            const angle = (Math.random() * 10 - 23) * (leftToRight ? 1 : -1);
+            const angle = (Math.random() * 10 - 23) * (leftToRight ? 1 : -1); // -18 a -28 grados, invertido si es derecha a izquierda
             const width = 180, height = 18, tailLen = 140;
 
             const shooting = document.createElement('div');
@@ -240,8 +299,10 @@ window.addEventListener('load', () => {
             shooting.style.transition = 'none';
 
             starBg.appendChild(shooting);
+            // Forzar reflow para que la animación se aplique correctamente
             void shooting.offsetWidth;
 
+            // Movimiento diagonal largo, fade out al final
             shooting.style.transition = 'transform 1.7s cubic-bezier(0.35,0.7,0.5,1), opacity 0.8s';
             shooting.style.transform = `translateX(${endX-startX}vw) translateY(22vh) rotate(${angle}deg)`;
 
@@ -251,18 +312,18 @@ window.addEventListener('load', () => {
 
         // Aparición periódica de estrellas grandes
         setInterval(() => {
-            if (section2.offsetParent !== null) {
+            if (section2.offsetParent !== null) { // Solo si visible
                 spawnStar();
             }
-        }, 2500);
+        }, 2500); // Cada 2.5 segundos
         
-        // Aparición de estrellas fugaces
+        // Aparición más ocasional de estrellas fugaces
         setInterval(() => {
-            if (section2.offsetParent !== null && Math.random() < 0.65) {
-                spawnShootingStar();
+            if (section2.offsetParent !== null) { // Solo si visible
+                if (Math.random() < 0.65) { // Probabilidad moderada
+                    spawnShootingStar(document.getElementById('star-bg'));
+                }
             }
-        }, 5000);
-    } else {
-        console.warn("No se puede inicializar el fondo de estrellas. Elementos necesarios no encontrados.");
-    }
+        }, 5000); // Cada 5 segundos
+    })();
 });
