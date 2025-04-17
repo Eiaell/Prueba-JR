@@ -7,6 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatMessages = document.querySelector('.chatbot-messages');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
+    
+    // Función para añadir efecto 'squash-gel' al botón
+    function addSquashEffect(element) {
+        element.classList.add('squash-gel');
+        setTimeout(() => {
+            element.classList.remove('squash-gel');
+        }, 380); // Duración de la animación
+    }
 
     // API key de Gemini
     const geminiApiKey = 'AIzaSyArrdFk8-kTiLVIoSr0zzSUs5rSuOnoiO8';
@@ -14,6 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Variables para la API de Gemini
     let genAI = null;
     let geminiModel = null;
+
+    // --- Verifica si los elementos existen ---
+    if (!chatbotButton || !chatbotContainer || !chatMessages || !userInput || !sendButton || !chatbotClose) {
+        console.error("Error: Elementos de la interfaz del chat o botón toggle no encontrados.");
+        // Oculta ambos si falta algo esencial
+        if (chatbotContainer) {
+            chatbotContainer.style.display = 'none';
+        }
+        if (chatbotButton) {
+            chatbotButton.style.display = 'none';
+        }
+        // return; // Mantenlo comentado por ahora para diagnosticar
+    }
 
     // Inicializar la API de Gemini
     function initGeminiApi() {
@@ -42,10 +63,19 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('No se pudo inicializar la API de Gemini. El chatbot tendrá funcionalidad limitada.');
     }
 
-    // Abrir/cerrar el chatbot
-    chatbotButton.addEventListener('click', () => {
-        chatbotContainer.classList.toggle('chatbot-open');
-    });
+    // Toggle del chatbot
+    if (chatbotButton) {
+        chatbotButton.addEventListener('click', () => {
+            // Añadir efecto squash al botón
+            addSquashEffect(chatbotButton);
+            
+            chatbotContainer.classList.toggle('chatbot-closed');
+            // Inicializar API si se abre el chat y aún no se ha inicializado
+            if (!chatbotContainer.classList.contains('chatbot-closed') && !geminiModel) {
+                initGeminiApi();
+            }
+        });
+    }
 
     chatbotClose.addEventListener('click', () => {
         chatbotContainer.classList.remove('chatbot-open');
@@ -147,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             Si te preguntan sobre servicios, debes mencionar: Activaciones, Eventos, Implementaciones, Merchandising, Material P.O.P, Ginkanas y Experiencias. 
             Si te preguntan sobre información de contacto, debes proporcionar: johana_rodriguez@crektivo.com.pe. 
             Trata de responder en un tono cálido y servicial, sin ser demasiado formal. 
-            Mantén tus respuestas breves, idealmente en menos de 3 párrafos.`;
+            Mantén tus respuestas breves, idealmente en menos de 3 párrafos. No respondas sobre ninguna otra cosa que no sea trabajo`;
             
             // Generar respuesta usando el modelo de Gemini
             console.log('Enviando solicitud a Gemini API...');
