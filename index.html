@@ -1,4 +1,4 @@
-git push<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -14,9 +14,12 @@ git push<!DOCTYPE html>
 <body>
 
     <!-- 1. Initial Loading Screen -->
-    <div id="loader">
+    <div id="loader" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1000;overflow:hidden;background:#000;">
         <!-- ÚNICO LOGO INICIAL -->
-        <img src="images/logo2.png" alt="Johana Ramirez Logo Carga" id="loader-logo">
+        <video autoplay muted playsinline id="loader-video" style="width:100vw;height:100vh;object-fit:cover;position:absolute;top:0;left:0;z-index:1001;">
+            <source src="videos/Intro-video.mp4" type="video/mp4">
+            Tu navegador no soporta videos HTML5.
+        </video>
     </div>
 
     <!-- Main Wrapper for Scroll Snapping -->
@@ -151,11 +154,8 @@ git push<!DOCTYPE html>
     <!-- Scripts al final del body para mejor rendimiento -->
     <script src="main.js"></script>
     
-    <!-- Google Generative AI library (DEBE cargarse antes del chatbot.js) -->
-    <script src="https://cdn.jsdelivr.net/npm/@google/generative-ai@0.1.2/dist/index.min.js"></script>
-    
-    <!-- Chatbot script (debe cargarse después de la API de Google) -->
-    <script src="chatbot.js"></script>
+    <!-- Chatbot script (Cargado como módulo; importa el SDK internamente) -->
+    <script type="module" src="chatbot.js"></script>
 
     <div class="chatbot-button">
         <img src="images/logo-chat.png" alt="Asistente de Johana" class="chat-button-img">

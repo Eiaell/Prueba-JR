@@ -22,29 +22,19 @@ window.addEventListener('load', () => {
         return;
     }
 
-    // --- Visualización del loader y transición ---
-    const loaderDuration = 2500; 
-
-    setTimeout(() => {
-        // 1. Ocultar fondo del loader y logo
-        loader.classList.add('hidden');
-        loaderLogo.classList.add('hidden');
-
-        // 2. Mostrar contenido principal
-        body.classList.add('loaded');
-
-        // 3. Mostrar logo principal
-        mainLogo.classList.add('visible');
-
-        // 4. Iniciar ciclo de títulos DESPUÉS de que el contenido esté visible
-        startTitleCycling();
-
-        // 5. Eliminar el loader del DOM después de la transición
-        loader.addEventListener('transitionend', () => {
-            loader.remove();
-        }, { once: true });
-
-    }, loaderDuration);
+    // --- Visualización del loader y transición sincronizada con el video ---
+    const loaderVideo = document.getElementById('loader-video');
+    if (loaderVideo) {
+        loaderVideo.addEventListener('ended', () => {
+            loader.classList.add('hidden');
+            body.classList.add('loaded');
+            mainLogo.classList.add('visible');
+            startTitleCycling();
+            loader.addEventListener('transitionend', () => {
+                loader.remove();
+            }, { once: true });
+        });
+    }
 
     // --- Función para ciclar títulos ---
     function cycleTitles() {

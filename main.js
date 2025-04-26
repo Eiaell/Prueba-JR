@@ -2,7 +2,7 @@
 window.addEventListener('load', () => {
     // --- Referencias a elementos DOM ---
     const loader = document.getElementById('loader');
-    const loaderLogo = document.getElementById('loader-logo');
+    const loaderVideo = document.getElementById('loader-video');
     const mainLogo = document.getElementById('main-logo'); 
     const body = document.body;
     const centeredContent = document.querySelector('.centered-content');
@@ -15,21 +15,33 @@ window.addEventListener('load', () => {
     const titleDisplayTime = 2000; 
 
     // --- Comprobaciones iniciales ---
-    if (!loader || !loaderLogo || !mainLogo || !body || !centeredContent || mainTitles.length === 0) {
+    if (!loader || !loaderVideo || !mainLogo || !body || !centeredContent || mainTitles.length === 0) {
         console.error("Error: Elementos esenciales no encontrados al cargar!");
         if(loader) loader.style.display = 'none';
         if(body) body.classList.add('loaded');
         return;
     }
 
+    // Transición al contenido tras finalizar video
+    if (loaderVideo) {
+        loaderVideo.addEventListener('ended', () => {
+            loader.classList.add('hidden');
+            body.classList.add('loaded');
+            mainLogo.classList.add('visible');
+            startTitleCycling();
+            loader.addEventListener('transitionend', () => {
+                loader.remove();
+            }, { once: true });
+        });
+    }
+
     // --- Visualización del loader y transición ---
-    const loaderDuration = 2500; 
+    const loaderDuration = 8000; 
 
     setTimeout(() => {
         // 1. Ocultar fondo del loader y logo
         loader.classList.add('hidden');
-        loaderLogo.classList.add('hidden');
-
+        // loader se oculta junto a su video bajo el contenedor loader
         // 2. Mostrar contenido principal
         body.classList.add('loaded');
 

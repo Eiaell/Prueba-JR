@@ -18,10 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // API key de Gemini
     const geminiApiKey = 'AIzaSyArrdFk8-kTiLVIoSr0zzSUs5rSuOnoiO8';
-    
-    // Variables para la API de Gemini
-    let genAI = null;
-    let geminiModel = null;
+    // No inicializamos SDK: usaremos la API REST directamente
 
     // --- Verifica si los elementos existen ---
     if (!chatbotButton || !chatbotContainer || !chatMessages || !userInput || !sendButton || !chatbotClose) {
@@ -36,48 +33,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // return; // Mantenlo comentado por ahora para diagnosticar
     }
 
-    // Inicializar la API de Gemini
-    function initGeminiApi() {
-        try {
-            // Verifica que la biblioteca esté disponible (cargada desde el HTML)
-            if (!window.google || !window.google.generativeai) {
-                console.error('Error: La biblioteca Google Generative AI no está disponible');
-                return false;
-            }
-            
-            // Inicializar el cliente con la API key
-            genAI = new google.generativeai.GoogleGenerativeAI(geminiApiKey);
-            geminiModel = genAI.getGenerativeModel({ model: "gemini-pro" });
-            
-            console.log('API de Gemini inicializada correctamente');
-            return true;
-        } catch (error) {
-            console.error('Error al inicializar la API de Gemini:', error);
-            return false;
-        }
-    }
-
-    // Inicializar la API de Gemini al cargar la página
-    const apiInitialized = initGeminiApi();
-    if (!apiInitialized) {
-        console.warn('No se pudo inicializar la API de Gemini. El chatbot tendrá funcionalidad limitada.');
-    }
-
     // Toggle del chatbot
     if (chatbotButton) {
-        chatbotButton.addEventListener('click', () => {
-            // Añadir efecto squash al botón
+        chatbotButton.addEventListener('click', async () => {
             addSquashEffect(chatbotButton);
-            
-            chatbotContainer.classList.toggle('chatbot-closed');
-            // Inicializar API si se abre el chat y aún no se ha inicializado
-            if (!chatbotContainer.classList.contains('chatbot-closed') && !geminiModel) {
-                initGeminiApi();
+            const isClosed = chatbotContainer.classList.contains('chatbot-closed');
+            if (isClosed) {
+                chatbotContainer.classList.remove('chatbot-closed');
+                chatbotContainer.classList.add('chatbot-open');
+            } else {
+                chatbotContainer.classList.add('chatbot-closed');
+                chatbotContainer.classList.remove('chatbot-open');
             }
         });
     }
 
     chatbotClose.addEventListener('click', () => {
+        chatbotContainer.classList.add('chatbot-closed');
         chatbotContainer.classList.remove('chatbot-open');
     });
 
@@ -163,49 +135,33 @@ document.addEventListener('DOMContentLoaded', () => {
         showTypingIndicator();
         
         try {
-            // Verificar que la API esté inicializada
-            if (!geminiModel) {
-                console.error('El modelo de Gemini no está inicializado');
-                hideTypingIndicator();
-                addBotMessage('Lo siento, estoy teniendo problemas para procesar mensajes. Por favor, intenta recargar la página.');
-                return;
-            }
-            
-            // Definir el contexto para el asistente
-            const prompt = `Eres el asistente virtual de Johana Rodriguez, una profesional de marketing y eventos. 
-            Debes responder de manera profesional, amable y concisa. 
-            Si te preguntan sobre servicios, debes mencionar: Activaciones, Eventos, Implementaciones, Merchandising, Material P.O.P, Ginkanas y Experiencias. 
-            Si te preguntan sobre información de contacto, debes proporcionar: johana_rodriguez@crektivo.com.pe. 
-            Trata de responder en un tono cálido y servicial, sin ser demasiado formal. 
-            Mantén tus respuestas breves, idealmente en menos de 3 párrafos. No respondas sobre ninguna otra cosa que no sea trabajo`;
-            
-            // Generar respuesta usando el modelo de Gemini
-            console.log('Enviando solicitud a Gemini API...');
-            const generationConfig = {
-                temperature: 0.7,
-                topK: 40,
-                topP: 0.95,
-                maxOutputTokens: 1024,
+            console.log('Enviando solicitud a Gemini via REST...');
+            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${geminiApiKey}`;
+            const payload = {
+                contents: [{ role: 'user', parts: [{ text: `Eres el asistente virtual de Johana Rodriguez, una profesional de marketing y eventos. 
+                Debes responder de manera profesional, amable y concisa. 
+                Si te preguntan sobre servicios, debes mencionar: Activaciones, Eventos, Implementaciones, Merchandising, Material P.O.P, Ginkanas y Experiencias. 
+                Si te preguntan sobre información de contacto, debes proporcionar: johana_rodriguez@crektivo.com.pe. 
+                Trata de responder en un tono cálido y servicial, sin ser demasiado formal. 
+                Mantén tus respuestas breves, idealmente en menos de 3 párrafos. No respondas sobre ninguna otra cosa que no sea trabajo` + '\n\nUsuario: ' + message }] }],
+                generationConfig: { temperature: 0.7, topK: 40, topP: 0.95, maxOutputTokens: 1024 }
             };
-            
-            const result = await geminiModel.generateContent({
-                contents: [{ role: 'user', parts: [{ text: prompt + '\n\nUsuario: ' + message }] }],
-                generationConfig,
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
             });
-            
-            const response = await result.response;
-            const botResponse = response.text();
-            console.log('Respuesta recibida de Gemini API');
-            
-            // Ocultar indicador de escritura
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            const botRes = Array.isArray(data.candidates) && data.candidates.length
+                ? (data.candidates[0].output || data.candidates[0].text || '')
+                : 'Sin respuesta';
             hideTypingIndicator();
-            
-            // Agregar respuesta del bot a la interfaz
-            addBotMessage(botResponse);
+            addBotMessage(botRes);
         } catch (error) {
-            console.error('Error al comunicarse con la API de Gemini:', error);
+            console.error('Error al comunicarse con la API REST de Gemini:', error);
             hideTypingIndicator();
-            addBotMessage('Lo siento, no puedo procesar tu mensaje en este momento. Por favor, intenta de nuevo más tarde.');
+            addBotMessage('Lo siento, no puedo procesar tu mensaje en este momento.');
         }
     }
 });
