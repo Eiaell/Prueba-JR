@@ -16,9 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 380); // Duración de la animación
     }
 
-    // API key de Gemini
-    const geminiApiKey = 'AIzaSyArrdFk8-kTiLVIoSr0zzSUs5rSuOnoiO8';
-    // No inicializamos SDK: usaremos la API REST directamente
+    // La API KEY ahora se gestiona en el backend (Flask proxy). No se expone en el frontend.
+    // No inicializamos SDK: usaremos el backend Flask como proxy seguro.
 
     // --- Verifica si los elementos existen ---
     if (!chatbotButton || !chatbotContainer || !chatMessages || !userInput || !sendButton || !chatbotClose) {
@@ -135,24 +134,23 @@ document.addEventListener('DOMContentLoaded', () => {
         showTypingIndicator();
         
         try {
-            console.log('Enviando solicitud a Gemini via REST...');
-            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${geminiApiKey}`;
-            const payload = {
-                contents: [{ role: 'user', parts: [{ text: `Eres el asistente virtual de Johana Rodriguez, una profesional de marketing y eventos. 
-                Debes responder de manera profesional, amable y concisa. 
-                Si te preguntan sobre servicios, debes mencionar: Activaciones, Eventos, Implementaciones, Merchandising, Material P.O.P, Ginkanas y Experiencias. 
-                Si te preguntan sobre información de contacto, debes proporcionar: johana_rodriguez@crektivo.com.pe. 
-                Trata de responder en un tono cálido y servicial, sin ser demasiado formal. 
-                Mantén tus respuestas breves, idealmente en menos de 3 párrafos. No respondas sobre ninguna otra cosa que no sea trabajo` + '\n\nUsuario: ' + message }] }],
-                generationConfig: { temperature: 0.7, topK: 40, topP: 0.95, maxOutputTokens: 1024 }
-            };
+            console.log('Enviando solicitud a Gemini via proxy backend...');
+            const url = 'http://localhost:5050/gemini-chat';
+            // Construir payload con solo el mensaje de usuario para el proxy
+            const payload = { message };
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const data = await response.json();
+            if (!response.ok) {
+                console.error('Error en el proxy Gemini:', data);
+                hideTypingIndicator();
+                addBotMessage(data.error?.message || JSON.stringify(data));
+                return;
+            }
+            // Extraer respuesta del proxy (Google Gemini generateContent)
             const botRes = Array.isArray(data.candidates) && data.candidates.length
                 ? (data.candidates[0].output || data.candidates[0].text || '')
                 : 'Sin respuesta';
