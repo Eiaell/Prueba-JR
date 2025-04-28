@@ -713,7 +713,7 @@ body {
 /* --- Helper Classes for Simple Transition --- */
 
 /* Animación GEL (Squash) solo para los botones del header */
-.menu-button.squash-gel, .contact-link.squash-gel, .footer-nav a.squash-gel {
+.menu-button.squash-gel, .contact-link.squash-gel, .footer-nav a.squash-gel, .chatbot-button.squash-gel {
   animation: squash-gel-btn 0.38s cubic-bezier(.36,1.5,.64,1);
 }
 @keyframes squash-gel-btn {
@@ -745,25 +745,25 @@ body {
     position: fixed !important;
     bottom: 20px !important;
     right: 20px !important;
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 120px;
     cursor: pointer;
     z-index: 99999 !important;
     display: flex !important;
     justify-content: center;
     align-items: center;
-    background: var(--pastel-pink) !important;
-    border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    overflow: hidden;
+    background: transparent !important;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
     transition: transform 0.2s ease;
     pointer-events: auto !important;
 }
 
 /* Ajustes para la imagen del botón de chat */
 .chatbot-button .chat-button-img {
-    width: 60%;
-    height: 60%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     display: block;
 }
@@ -780,7 +780,7 @@ body {
     display: flex;
     flex-direction: column;
     position: fixed;
-    bottom: 90px;
+    bottom: 150px;
     right: 20px;
     width: 320px;
     height: 400px; /* Altura fija para que la ventana del chat sea visible */
